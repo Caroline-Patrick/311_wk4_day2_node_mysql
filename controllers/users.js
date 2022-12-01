@@ -8,37 +8,43 @@ const getAllUsers = (req, res) => {
     if (err) return handleSQLError(res, err)
     return res.json(rows);
   })
-}
+};
 
 const getUserById = (req, res) => {
+  console.log(req)
+
   // SELECT USERS WHERE ID = <REQ PARAMS ID>
-  let sql = "QUERY GOES HERE"
+  let sql = "SELECT ??, ?? FROM ?? WHERE ?? = ?";
+  const replacements = ["id", "first_name", "users", "id", req.params.id];
+
   // WHAT GOES IN THE BRACKETS
-  sql = mysql.format(sql, [])
+  sql = mysql.format(sql, replacements)
 
   pool.query(sql, (err, rows) => {
     if (err) return handleSQLError(res, err)
     return res.json(rows);
   })
-}
+};
 
 const createUser = (req, res) => {
   // INSERT INTO USERS FIRST AND LAST NAME 
-  let sql = "QUERY GOES HERE"
+  let sql = "INSERT INTO ?? (??, ??) VALUES (?, ?)";
   // WHAT GOES IN THE BRACKETS
-  sql = mysql.format(sql, [])
+  replacements = ["users", "first_name", "last_name","Caroline", "Patrick" ]
+  sql = mysql.format(sql, replacements)
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
     return res.json({ newId: results.insertId });
   })
-}
+};
 
 const updateUserById = (req, res) => {
   // UPDATE USERS AND SET FIRST AND LAST NAME WHERE ID = <REQ PARAMS ID>
-  let sql = ""
+  let sql = "UPDATE ?? SET ?? WHERE ? = ?"
   // WHAT GOES IN THE BRACKETS
-  sql = mysql.format(sql, [])
+  const replacements = ["users", "first_name", "changedFirst", "last_name", "changedLast", "id", req.params.id]
+  sql = mysql.format(sql, replacements)
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -48,9 +54,10 @@ const updateUserById = (req, res) => {
 
 const deleteUserByFirstName = (req, res) => {
   // DELETE FROM USERS WHERE FIRST NAME = <REQ PARAMS FIRST_NAME>
-  let sql = ""
+  let sql = "DELETE FROM ?? WHERE ?? = ?"
   // WHAT GOES IN THE BRACKETS
-  sql = mysql.format(sql, [])
+  const replacements = ["users", "first_name", req.params.first_name];
+  sql = mysql.format(sql, replacements)
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
